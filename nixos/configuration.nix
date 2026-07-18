@@ -155,6 +155,10 @@ nix.settings = {
   experimental-features = [ "nix-command" "flakes" ];
   auto-optimise-store = true;
 };
+
+   nixpkgs.config.permittedInsecurePackages = [
+    "electron-40.10.5"
+  ];
 nix.gc = {
   automatic = true;
   dates = "weekly";
@@ -164,5 +168,5 @@ services.fstrim.enable = true;
 services.fwupd.enable = true;
   # NixOS settings
   nixpkgs.config.allowUnfree = true;
-  system.stateVersion = "26.11";
+  system.stateVersion = "25.11";
 }
