@@ -56,7 +56,7 @@ wayland.windowManager.hyprland = {
  #   color = "rgba(1a1a1aee)";  if want to use add color=lib.mkForce
   };
       };
-
+       
       animations = {
         enabled = true;
         bezier = [
@@ -96,13 +96,14 @@ wayland.windowManager.hyprland = {
         
         # --- Window Management ---
         "$mainMod, C, killactive, "
-        "$mainMod, V, togglefloating, "
+  #      "$mainMod, V, togglefloating, "
         "$mainMod, F, fullscreen, 0"
         "$mainMod SHIFT, F, fullscreen, 1"
         "$mainMod, P, pseudo, "
      #   "$mainMod, J, togglesplit, "
         "$mainMod, M, exit, "
-        
+        # copy view list
+        "$mainMod, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
         # --- Focus Navigation ---
         "$mainMod, left, movefocus, l"
         "$mainMod, right, movefocus, r"
@@ -224,13 +225,21 @@ wayland.windowManager.hyprland = {
       ];
 
       # Autostart
-      exec-once = [
-        "waybar"
-        "hypridle"
-        "wl-paste --type text --watch cliphist store"
-        "wl-paste --type image --watch cliphist store"
-        "swaync"
-      ];
+exec-once = [
+  "waybar"
+  "hypridle"
+  "swaync"
+
+  # clipboard
+  "wl-paste --type text --watch cliphist store"
+  "wl-paste --type image --watch cliphist store"
+
+  # wallpaper
+  "hyprpaper"
+
+  # polkit authentication
+  "lxqt-policykit-agent"
+];
     };
   };
 
@@ -266,7 +275,7 @@ wayland.windowManager.hyprland = {
       };
       listener = [
         {
-          timeout = 300;
+          timeout = 3000;
           on-timeout = "hyprlock";
         }
       ];

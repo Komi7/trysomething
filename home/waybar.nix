@@ -144,6 +144,7 @@
         ];
 
         modules-right = [
+          "custom/weather"
           "cpu"
           "memory"
           "temperature"
@@ -267,11 +268,17 @@
           format = "│";
         };
 
-"custom/power" = {
-  format = "";
-  tooltip = "Power";
-  on-click = "powermenu";
-};
+       "custom/power" = {
+          format = "";
+         tooltip = "Power";
+        on-click = "powermenu";
+       };
+        
+        "custom/weather" = {
+        format = "󰖐 {}";
+        exec = "curl -s 'wttr.in/Bogra?format=%t'";
+        interval = 1800; 
+        };
          
         tray = {
           icon-size = 16;

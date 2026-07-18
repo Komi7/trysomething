@@ -8,6 +8,7 @@
     ./kde.nix
     ./stylix.nix
     ./power.nix
+    ./laptop.nix
   ];
 
   # System hostname and time
@@ -93,7 +94,8 @@
     gcc
     gnumake
     pkg-config
-    
+  # Polkit agent for Hyprland
+    lxqt.lxqt-policykit
     # Bluetooth
     bluez
     bluez-tools

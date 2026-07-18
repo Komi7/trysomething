@@ -66,6 +66,10 @@
     gimp
     #notebook
     obsidian
+    
+    #message_App
+    vesktop
+    telegram-desktop
   ];
   
   
