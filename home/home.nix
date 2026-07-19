@@ -70,6 +70,10 @@
     #message_App
     vesktop
     telegram-desktop
+    
+    #Video edit
+    kdePackages.kdenlive
+    losslesscut-bin
   ];
   
   
