@@ -158,6 +158,7 @@ nix.settings = {
 
    nixpkgs.config.permittedInsecurePackages = [
     "electron-40.10.5"
+    "electron-39.8.10"
   ];
 nix.gc = {
   automatic = true;

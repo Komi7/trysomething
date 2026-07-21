@@ -74,6 +74,10 @@
     #Video edit
     kdePackages.kdenlive
     losslesscut-bin
+    google-chrome
+    #password_manager
+    bitwarden-desktop
+
   ];
   
   
