@@ -18,7 +18,14 @@
       gtk.enable = true;
     };
 
-    fonts = {
+ 
+
+  fonts = {
+    sizes = {
+      applications = 14;
+      terminal = 14;
+    };
+
       monospace = {
         package = pkgs.nerd-fonts.jetbrains-mono;
         name = "JetBrainsMono Nerd Font";

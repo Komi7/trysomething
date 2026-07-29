@@ -13,6 +13,7 @@
     ./fish.nix
     ./git.nix
     ./scripts.nix
+    ./vscode.nix
   ];
    
 
@@ -77,6 +78,10 @@
     google-chrome
     #password_manager
     bitwarden-desktop
+    
+    # web build
+    nodejs
+    
 
   ];
   
@@ -87,6 +92,14 @@
     defaultApplications = {
       "inode/directory" = "thunar.desktop";
       "application/x-gnome-saved-search" = "thunar.desktop";
+      
+       # Set Geany as default for text files
+      "text/plain" = "geany.desktop";
+      "text/markdown" = "geany.desktop";
+      "application/text" = "geany.desktop";
+      "application/x-zerosize" = "geany.desktop"; # Handles blank/empty files
+      
+      
     };
   };
  

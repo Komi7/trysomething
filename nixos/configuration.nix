@@ -9,6 +9,7 @@
     ./stylix.nix
     ./power.nix
     ./laptop.nix
+    ./DisplayManager.nix
   ];
 
   # System hostname and time
@@ -75,6 +76,7 @@
     extraGroups = [ "networkmanager" "wheel" "docker" "input" "audio" ];
     shell = pkgs.fish;
   };
+  
 
   # Packages - Core System
   environment.systemPackages = with pkgs; [
@@ -140,6 +142,8 @@
     rofi
     dunst
     thunar
+
+    
   ];
 
   # Shell
