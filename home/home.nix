@@ -81,6 +81,12 @@
     
     # web build
     nodejs
+    rustup
+    pkg-config
+    openssl
+    webkitgtk_4_1
+    gtk3
+    glib
     
 
   ];
