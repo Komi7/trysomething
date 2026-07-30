@@ -35,6 +35,7 @@
 
       pkgs = import nixpkgs {
         inherit system;
+        config.allowUnfree = true;
       };
     in
     {
@@ -57,17 +58,17 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
 
-            home-manager.users.${username} = import ./home/home.nix;
-
             home-manager.extraSpecialArgs = {
               inherit username;
             };
+
+            home-manager.users.${username} = import ./home/home.nix;
           }
         ];
       };
 
       devShells.${system}.default = pkgs.mkShell {
-        buildInputs = with pkgs; [
+        packages = with pkgs; [
           git
           nixpkgs-fmt
         ];

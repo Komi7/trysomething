@@ -146,6 +146,11 @@
 
     #cachix
     cachix
+
+    #yt
+    yt-dlp
+    ffmpeg
+    feh
     
 
     
