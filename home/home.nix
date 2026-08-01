@@ -87,6 +87,22 @@
     webkitgtk_4_1
     gtk3
     glib
+
+    #pkg build
+        # Tauri
+    cargo-tauri
+
+    # Media tools
+    yt-dlp
+    ffmpeg
+
+    # Build dependencies
+    pkg-config
+    openssl
+    webkitgtk_4_1
+    gtk3
+    libsoup_3
+    pnpm
     
 
   ];
