@@ -95,21 +95,6 @@ nixpkgs-fmt .
 - Displays: `hyprctl monitors`, inspect `home/hyprland.nix` monitor settings
 - Audio: `pavucontrol`, `systemctl --user status pipewire`
 
-## Recommendations & small fixes I applied
 
-- README typos corrected (e.g., `brignessctl` → `brightnessctl`) and instruction paths clarified.
-- Confirm `system.stateVersion` (in `nixos/configuration.nix`) vs `home.stateVersion` (`home/home.nix`) — keep them aligned with your target NixOS release for predictable behavior.
-- Consider adding a top-level `LICENSE` file (README declares MIT but no LICENSE file exists) and a small CI workflow to run `nix flake check` / `nix build` on pushes/PRs.
-
-## License
-
-MIT (add a LICENSE file at the repo root if you want an explicit license file)
 
 ---
-
-If you want, I can now:
-- commit this updated README (I will) — or open a PR instead if you prefer review;
-- add a LICENSE file with the MIT text;
-- add a simple GitHub Actions workflow that runs `nix flake check` and `nix build .#nixosConfigurations.komi.config.system.build.toplevel` on pushes and PRs.
-
-Which of these should I do next?
