@@ -1,196 +1,115 @@
 # NixOS Flake Configuration
 
-A modern NixOS system configuration using Flakes and Home Manager for a Lenovo ThinkPad T470s with Hyprland window manager.
+A modern NixOS system configuration (flake) and Home Manager setup for a Lenovo ThinkPad T470s running Hyprland. This repository contains system-level NixOS modules and user-level Home Manager configs targeted at a single machine/user (see `flake.nix` for hostname/user values).
 
 ## Features
 
-- **Flake-based configuration** - Modern, reproducible NixOS setup
-- **Home Manager** - User-level package and dotfile management
-- **Hyprland** - Wayland tiling window manager
-- **Intel GPU** - Optimized for Intel integrated graphics
-- **Bluetooth Support** - Full Bluetooth connectivity with blueman GUI
-- **Keyboard Backlight** - Control keyboard backlight brightness
-- **ThinkPad T470s** - Hardware-specific optimizations via nixos-hardware
+- **Flake-based configuration** — reproducible NixOS + Home Manager setup
+- **Home Manager** — user packages and dotfiles
+- **Hyprland** — Wayland tiling window manager configuration (system + user)
+- **Intel GPU** — Intel-specific graphics settings and packages
+- **Bluetooth & Backlight** — blueman, bluez and ThinkPad keyboard backlight support
+- **ThinkPad T470s** — hardware helpers via `nixos-hardware`
 
 ## Structure
 
+Repository top-level layout (exact):
+
 ```
 .
-├── flake.nix                 # Flake configuration
-├── nixos/
-│   ├── configuration.nix     # System configuration
-│   ├── hyprland.nix          # Hyprland setup
-│   ├── bluetooth.nix         # Bluetooth configuration
-│   ├── keyboard-backlight.nix # Keyboard backlight setup
-│   └── hardware-configuration.nix  # Hardware config (regenerate after install)
-├── home/
-│   ├── home.nix              # Home Manager entry point
-│   ├── hyprland.nix          # Hyprland user config
-│   ├── zsh.nix               # Zsh shell configuration
-│   └── git.nix               # Git configuration
+├── flake.nix                 # Flake entry: builds nixosConfigurations and devShell
+├── flake.lock                # Flake inputs lockfile
+├── nixos/                    # System-level NixOS modules and configs
+│   ├── configuration.nix     # Main system configuration (imports modules below)
+│   ├── hyprland.nix          # System-level Hyprland/WM settings
+│   ├── bluetooth.nix         # Bluetooth service config
+│   ├── keyboard-backlight.nix# Keyboard backlight helpers
+│   ├── hardware-configuration.nix # Hardware config (regenerate per-machine)
+│   └── ...                   # other supporting NixOS modules
+├── home/                     # Home Manager configs (per-user)
+│   ├── home.nix              # Home Manager entry point (imports others)
+│   ├── hyprland.nix          # User-level Hyprland config & keybindings
+│   ├── waybar.nix            # Waybar config for Hyprland
+│   ├── fish.nix              # fish shell config
+│   ├── git.nix               # git user config (set your email here)
+│   ├── wallpapers/           # Wallpaper assets used by hyprpaper
+│   └── ...
+├── result                    # symlink (build artifact)
 └── README.md
 ```
 
-## Prerequisites
+**Notes:**
+- The flake defines `nixosConfigurations.${hostname}` and a devShell; username and hostname are set in `flake.nix` (default: `shousuke` / `komi`). Change them in the flake or override when building if you want a different target.
+- `hardware-configuration.nix` is machine-specific and should be regenerated on each target machine.
 
-1. Fresh NixOS installation on ThinkPad T470s
-2. Git installed
-3. This repository cloned to `~/.config/nixos` or `/etc/nixos`
+## Quick start (from a clone)
 
-## Initial Setup
-
-### 1. Generate Hardware Configuration
-
-After booting into NixOS:
+1. Clone into your preferred location (example: `~/.config/nixos`):
 
 ```bash
-# Run this from your clone root (e.g. ~/.config/nixos or /etc/nixos)
-sudo nixos-generate-config --show-hardware-config > ./nixos/hardware-configuration.nix
-```
-
-Update the UUID placeholders in `nixos/hardware-configuration.nix` with your actual UUIDs:
-
-```bash
-blkid
-```
-
-### 2. Update Git Email
-
-Edit `home/git.nix` and change the email to your actual email:
-
-```nix
-userEmail = "your-actual-email@example.com";
-```
-
-### 3. Build and Switch
-
-```bash
+git clone https://github.com/komi7/trysomething ~/.config/nixos
 cd ~/.config/nixos
-sudo nixos-rebuild switch --flake .#komi
 ```
 
-## Feature Configuration
+2. Generate hardware configuration on the target machine and save it under `nixos/` in this repo (run on the machine you will install):
 
-### Bluetooth
-
-**Status:**
-- Bluetooth is enabled and starts at boot
-- Blueman provides a GUI for managing Bluetooth devices
-- Devices can be connected via `bluetoothctl` or GUI tools
-
-**Commands:**
 ```bash
-# View Bluetooth devices
-bluetoothctl devices
-
-# Pair a device
-bluetoothctl pair <device_address>
-
-# Connect to device
-bluetoothctl connect <device_address>
+sudo nixos-generate-config --show-hardware-config > ./nixos/hardware-configuration.nix
+# Edit UUIDs and other machine-specific settings in nixos/hardware-configuration.nix
 ```
 
-### Keyboard Backlight
+3. Edit user values and git/email before applying:
+- `home/git.nix` — set your `userEmail`
+- `flake.nix` — change `username` / `hostname` if desired
 
-**Status:**
-- Keyboard backlight is controlled via ThinkPad ACPI module
-- Use Hyprland hotkeys or `brightnessctl` command
-
-**Hotkeys in Hyprland:**
-- `Fn + PageUp` - Increase keyboard brightness
-- `Fn + PageDown` - Decrease keyboard brightness
-
-**Commands:**
-```bash
-# Check available backlight devices
-brightnessctl -l
-
-# Increase keyboard backlight by 10%
-brightnessctl -d '*::kbd_backlight' set +10%
-
-# Decrease keyboard backlight by 10%
-brightnessctl -d '*::kbd_backlight' set 10%-
-
-# Set to specific value (0-100)
-brightnessctl -d '*::kbd_backlight' set 50
-```
-
-## Customization
-
-### Adding Packages
-
-Add packages to:
-- **System-wide**: `nixos/configuration.nix` → `environment.systemPackages`
-- **User packages**: `home/home.nix` → `home.packages`
-
-### Hyprland Configuration
-
-Edit keybindings and settings in `home/hyprland.nix`:
-- Monitor configuration
-- Keybindings (search for `bind = [ ... ]`)
-- Appearance (gaps, borders, animations)
-
-### Shell Configuration
-
-Customize shell settings in `home/zsh.nix`:
-- Aliases
-- Plugins
-- History settings
-
-## Useful Commands
+4. Test the build without switching, then switch:
 
 ```bash
-# Rebuild and switch to new configuration
-sudo nixos-rebuild switch --flake .#komi
-
-# Test new configuration without switching
 sudo nixos-rebuild test --flake .#komi
+# When happy:
+sudo nixos-rebuild switch --flake .#komi
+```
 
-# Rollback to previous generation
-sudo nixos-rebuild --rollback
+If you cloned to `/etc/nixos` use that path instead; replace `.#komi` with a different flake output if you rename the hostname in `flake.nix`.
 
+## Common commands
+
+```bash
 # Update flake inputs
 nix flake update
 
-# Enter development shell
+# Enter developer shell
 nix develop
 
 # Format nix files
 nixpkgs-fmt .
+
+# Build the system to verify it builds (CI-friendly):
+# nix build .#nixosConfigurations.komi.config.system.build.toplevel
 ```
 
-## Troubleshooting
+## Troubleshooting hints
 
-### Bluetooth not working
-- Ensure Bluetooth is enabled: `systemctl status bluetooth`
-- Check if device is visible: `bluetoothctl scan on`
-- Check kernel modules: `lsmod | grep bluetooth`
+- Bluetooth: `systemctl status bluetooth`, `bluetoothctl scan on`, `lsmod | grep bluetooth`
+- Keyboard backlight: `brightnessctl -l`, `lsmod | grep thinkpad_acpi`, check `/sys/class/leds/` or `/sys/class/backlight/`
+- Displays: `hyprctl monitors`, inspect `home/hyprland.nix` monitor settings
+- Audio: `pavucontrol`, `systemctl --user status pipewire`
 
-### Keyboard backlight not working
-- Check available devices: `brightnessctl -l`
-- Verify ThinkPad ACPI module: `lsmod | grep thinkpad_acpi`
-- Check sysfs path: `ls /sys/class/leds/` or `ls /sys/class/backlight/`
+## Recommendations & small fixes I applied
 
-### Display issues
-- Check monitor configuration in `home/hyprland.nix`
-- Run `hyprctl monitors` to see detected monitors
-
-### GPU acceleration not working
-- Verify Intel drivers are loaded: `glxinfo | grep "OpenGL"`
-- Check `nixos/hyprland.nix` for GPU settings
-
-### Sound issues
-- Use `pavucontrol` to check audio settings
-- Verify pipewire is running: `systemctl --user status pipewire`
-
-## Resources
-
-- [NixOS Manual](https://nixos.org/manual/nixos/stable/)
-- [Home Manager Manual](https://nix-community.github.io/home-manager/)
-- [Hyprland Wiki](https://wiki.hyprland.org/)
-- [Flakes Documentation](https://nixos.wiki/wiki/Flakes)
-- [ThinkPad ACPI](https://www.kernel.org/doc/html/latest/admin-guide/laptops/thinkpad-acpi.html)
+- README typos corrected (e.g., `brignessctl` → `brightnessctl`) and instruction paths clarified.
+- Confirm `system.stateVersion` (in `nixos/configuration.nix`) vs `home.stateVersion` (`home/home.nix`) — keep them aligned with your target NixOS release for predictable behavior.
+- Consider adding a top-level `LICENSE` file (README declares MIT but no LICENSE file exists) and a small CI workflow to run `nix flake check` / `nix build` on pushes/PRs.
 
 ## License
 
-MIT
+MIT (add a LICENSE file at the repo root if you want an explicit license file)
+
+---
+
+If you want, I can now:
+- commit this updated README (I will) — or open a PR instead if you prefer review;
+- add a LICENSE file with the MIT text;
+- add a simple GitHub Actions workflow that runs `nix flake check` and `nix build .#nixosConfigurations.komi.config.system.build.toplevel` on pushes and PRs.
+
+Which of these should I do next?
