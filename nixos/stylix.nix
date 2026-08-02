@@ -15,7 +15,6 @@
       qt = {
         enable = true;
         platform = lib.mkForce "qtct";
-
       };
 
     };
@@ -48,9 +47,12 @@
     };
 
     cursor = {
-      package = pkgs.whitesur-cursors;
-      name = "WhiteSur-cursors";
-      size = 24;
+        package = pkgs.vanilla-dmz;
+        name = "DMZ-Black";
+        size = 24;
+ #     package = pkgs.whitesur-cursors;
+ #     name = "WhiteSur-cursors";
+ #     size = 24;
     };
   };
 }
