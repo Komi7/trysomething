@@ -10,21 +10,21 @@
     polarity = "dark";
 
     targets = {
+      gtk.enable = true;
+
       qt = {
         enable = true;
         platform = lib.mkForce "qtct";
+
       };
 
-      gtk.enable = true;
     };
 
- 
-
-  fonts = {
-    sizes = {
-      applications = 14;
-      terminal = 14;
-    };
+    fonts = {
+      sizes = {
+        applications = 14;
+        terminal = 14;
+      };
 
       monospace = {
         package = pkgs.nerd-fonts.jetbrains-mono;
@@ -53,5 +53,4 @@
       size = 24;
     };
   };
-
 }

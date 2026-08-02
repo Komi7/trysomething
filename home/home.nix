@@ -14,6 +14,7 @@
     ./git.nix
     ./scripts.nix
     ./vscode.nix
+    ./ghostty.nix
   ];
    
 
