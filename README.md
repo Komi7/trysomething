@@ -44,10 +44,11 @@ A modern NixOS system configuration using Flakes and Home Manager for a Lenovo T
 After booting into NixOS:
 
 ```bash
-sudo nixos-generate-config --show-hardware-config > ~/.config/nixos/nixos/hardware-configuration.nix
+# Run this from your clone root (e.g. ~/.config/nixos or /etc/nixos)
+sudo nixos-generate-config --show-hardware-config > ./nixos/hardware-configuration.nix
 ```
 
-Update the UUID placeholders in `hardware-configuration.nix` with your actual UUIDs:
+Update the UUID placeholders in `nixos/hardware-configuration.nix` with your actual UUIDs:
 
 ```bash
 blkid
@@ -75,7 +76,7 @@ sudo nixos-rebuild switch --flake .#komi
 **Status:**
 - Bluetooth is enabled and starts at boot
 - Blueman provides a GUI for managing Bluetooth devices
-- Devices can be connected via `blueberry` GUI or command line
+- Devices can be connected via `bluetoothctl` or GUI tools
 
 **Commands:**
 ```bash
@@ -102,16 +103,16 @@ bluetoothctl connect <device_address>
 **Commands:**
 ```bash
 # Check available backlight devices
-brignessctl -l
+brightnessctl -l
 
 # Increase keyboard backlight by 10%
-brignessctl -d '*::kbd_backlight' set +10%
+brightnessctl -d '*::kbd_backlight' set +10%
 
 # Decrease keyboard backlight by 10%
-brignessctl -d '*::kbd_backlight' set 10%-
+brightnessctl -d '*::kbd_backlight' set 10%-
 
 # Set to specific value (0-100)
-brignessctl -d '*::kbd_backlight' set 50
+brightnessctl -d '*::kbd_backlight' set 50
 ```
 
 ## Customization
