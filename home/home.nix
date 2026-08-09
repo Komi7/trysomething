@@ -73,6 +73,12 @@
     vesktop
     telegram-desktop
     
+    #keyboard and mouse 
+     deskflow
+      
+    #WIFI INFO
+    bettercap
+    
     #Video edit
     kdePackages.kdenlive
     losslesscut-bin
